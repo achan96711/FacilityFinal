@@ -2,10 +2,13 @@ package Model;
 import java.util.*;
 import Data.DataList;
 
-public class MaintenanceSchedule extends Maintenance {
+public class MaintenanceSchedule  {
 /* a list of issues for one facility */
-	Maintenance s = new Maintenance();
+	
+	/*maintenance schedule */
+	public ArrayList<Maintenance> schedule = new ArrayList<>();
 	private double totalFacilityMaintenanceCost, problemRate, totalFacilityDownTime;
+	Maintenance s = new Maintenance();
 	
 	public void makeFacilityMaintRequest(Maintenance m) { /* facility maintenance */
 		schedule.add(m);
@@ -16,9 +19,9 @@ public class MaintenanceSchedule extends Maintenance {
 	}
 	
 	public Maintenance getMaintenance(int id) {
-		for(int j = 0; j < holdings.size();j++) {
-			if (id == holdings.get(j).getFacilityID()) {
-				s = holdings.get(j);
+		for(int j = 0; j < schedule.size();j++) {
+			if (id == schedule.get(j).getRequestID()) {
+				s = schedule.get(j);
 			}
 			else {
 				s = null;
@@ -34,7 +37,7 @@ public class MaintenanceSchedule extends Maintenance {
 	public void calcMaintenanceCost() {
 		totalFacilityMaintenanceCost = 0; /*facility maintenance */
 		for(int i = 0; i < schedule.size(); i++) {
-			double temp = schedule.get(i).getTotalCost(); /*retrieves total cost from each maintenance and sums them up */
+			double temp = schedule.get(i).calcTotalCost(); /*retrieves total cost from each maintenance and sums them up */
 			totalFacilityMaintenanceCost = totalFacilityMaintenanceCost + temp;
 		}
 	}
@@ -56,9 +59,12 @@ public class MaintenanceSchedule extends Maintenance {
 		int ID = schedule.get(i).getRequestID();
 		String person = schedule.get(i).getRequestor();
 		String code = schedule.get(i).getProblemShortCode();
+		String problem = schedule.get(i).getDescription();
+		System.out.println("");
 		System.out.println("ID: " + ID + " ");
-		System.out.print("Requestor: " + person + " ");
-		System.out.print("Issue: " + code + " ");
+		System.out.println("Requestor: " + person + " ");
+		System.out.println("Issue: " + code + " ");
+		System.out.println("Description: " + problem + " ");
 		}
 	}
 	

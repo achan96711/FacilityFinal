@@ -1,11 +1,9 @@
 package Model;
 
-import Data.DataList;
 import java.time.LocalDate;
 import java.time.Period;
 
-
-public class Maintenance extends DataList {
+public class Maintenance {
 /* one issue that affects a facility */
 	private LocalDate start, end;
 	private int requestID;
@@ -13,7 +11,7 @@ public class Maintenance extends DataList {
 	private double totalCost, dailyRate, downTime;
 	private boolean status;
 	
-  public Maintenance() {};
+  public Maintenance() {}
 	
  public Maintenance(int a, String b, String c, String d, String f, double g, double h, String i, String j){
 		requestID = a;
@@ -23,6 +21,7 @@ public class Maintenance extends DataList {
 		description= f;
 		dailyRate = g;
 		downTime = h;
+		totalCost = this.calcTotalCost();
 		start = LocalDate.parse(i);
 		end = LocalDate.parse(j);
 	}
@@ -101,12 +100,9 @@ public class Maintenance extends DataList {
 		this.dailyRate = dailyRate;
 	}
 	
-	public double getTotalCost() {
-		return totalCost;
-	}
-	
-	public void calcTotalCost() {
+	public double calcTotalCost() {
 		totalCost = downTime * dailyRate; /*Faculty Maintenance*/
+		return totalCost;
 	}
 	
 	public double getdownTime() {

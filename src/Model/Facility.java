@@ -5,14 +5,14 @@ import java.time.LocalDate;
 import java.time.Period;
 import Data.DataList;
 
-public class Facility extends Maintenance {
+public class Facility  {
 	private LocalDate start, end;
 	private int facilityID, currentCapacity, maxCapacity, numRoom;
 	private String name,status, user;
 	private double workTime, actualUsage, actualUsageRate;
 	public ArrayList<String> facilityDetail = new ArrayList<>();
 	public ArrayList<String> maintenanceWorkers = new ArrayList<>();
-	public ArrayList<Maintenance> temporary = new ArrayList<>();
+	public ArrayList<Maintenance> temporaryProblems = new ArrayList<>();
 	public ArrayList<Inspection> inspectionList = new ArrayList<>();
 	
 	public MaintenanceSchedule m = new MaintenanceSchedule();
@@ -64,9 +64,9 @@ public class Facility extends Maintenance {
 	}
 	
 	public void listMaintenance() {
-		temporary = m.schedule;
-		for(int i = 0; i < temporary.size(); i++) {
-			String worker = temporary.get(i).getMaintenancePerson();
+		temporaryProblems = m.schedule;
+		for(int i = 0; i < temporaryProblems.size(); i++) {
+			String worker = temporaryProblems.get(i).getMaintenancePerson();
 			if(maintenanceWorkers.contains(worker) == false) {
 				maintenanceWorkers.add(worker);
 			}
@@ -168,8 +168,8 @@ public class Facility extends Maintenance {
 	facilityDetail.remove(s);	
 	}
 	
-	public void getFacilityDetail(int i) {
-	facilityDetail.get(i);	
+	public String getFacilityDetail(int i) {
+	return facilityDetail.get(i);	
 	}
 	
 	public void addInspection(Inspection i) {
@@ -177,7 +177,7 @@ public class Facility extends Maintenance {
 	}
 		
 	public void removeInspection(Inspection i) {
-	inspectionList.remove(i);	
+	inspectionList.remove(i);	//listed here but have not added to user panel yet
 	}
 		
 	public void getInspection(int i) {
@@ -189,8 +189,8 @@ public class Facility extends Maintenance {
 			int ID = inspectionList.get(i).getFacilityID();
 			String building = inspectionList.get(i).getFacilityName();
 			String inspector = inspectionList.get(i).getInspector();
-			LocalDate doli = inspectionList.get(i).getDateOfLastInspection();
-			LocalDate expireDate = inspectionList.get(i).getExpirationDate();
+			String doli = inspectionList.get(i).getDateOfLastInspection();
+			String expireDate = inspectionList.get(i).getExpirationDate();
 			boolean result = inspectionList.get(i).getPass();
 			System.out.println("Facility ID: " + ID + " ");
 			System.out.print("Facility Name: " + building + " ");

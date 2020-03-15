@@ -6,11 +6,14 @@ import java.util.*;
 
 public class UserPanel extends FacilityGroup {
 static int input = 25;
+static FacilityGroup business = new FacilityGroup();
+static Facility hold = new Facility();
 
  public static void main(String args[]) {
 	 
 	 Scanner keyboard = new Scanner(System.in);
 	 while(input != 0){
+	 System.out.println("");
 	 System.out.println("User, What would you like to do?. Enter a number between 1 - 20 to select an action. Enter 0 to quit.");
 	 System.out.println("1: addNewFacility");
 	 System.out.println("2: removeFacility");
@@ -31,14 +34,14 @@ static int input = 25;
 	 System.out.println("17: listMaintRequest");
 	 System.out.println("18: listMaintenance");
 	 System.out.println("19: listFacilityProblems");
+	 System.out.println("20: addInspection");
 	 
-	 FacilityGroup business = new FacilityGroup();
-	 Facility hold = new Facility();
 	 int id;
 	 String detail;
 	 double result;
 	 
 	 input = keyboard.nextInt();
+	 keyboard.nextLine();
 	 switch(input){
 		 case 1:   System.out.println("Please enter facility information: ");           
 		 System.out.println("Please enter facilityID: ");
@@ -67,39 +70,37 @@ static int input = 25;
 		  Facility building = new Facility(a,b,c,d,e,f,g,h,i);
 		  business.addNewFacility(building);
 		  System.out.println("Facility successfully added to owned facilities");	
+		  System.out.println(business.holdings.size());
 			
 			 break; //addFacility
 		 case 2:				//removeFacility
 			 if(business.holdings.size() > 0) {
 				 System.out.println("Please enter the facilityID you want to remove from the list of facilities: ");
-				 id = keyboard.nextInt();
+				 id = Integer.parseInt(keyboard.nextLine());
 				 for(int j = 0; j < business.holdings.size();j++) {
-						if (id == holdings.get(j).getFacilityID()) {
-					 hold = holdings.get(j);
+						if (id == business.holdings.get(j).getFacilityID()) {
+					 hold = business.holdings.get(j);
 					 business.removeFacility(hold);
 					 break;
 						}
-			  else {
-				 System.out.println("Error: unable to remove building from the list.");
-			 }
 			}
 		}
 			 break;
 		 case 3:				//listFacilities
-			 business.listFacilities();
+			 System.out.println(business.holdings.size());
+			business.listFacilities();
 			 break;
 		 case 4:                 //addFacilityDetail
 			 System.out.println("Please enter the string that will be the business detail : ");
 			 detail = keyboard.nextLine();
-			 keyboard.nextLine();
 			 System.out.println("Please enter the facilityID you want to add this detail to: ");
-			 id = keyboard.nextInt();
-			 keyboard.nextLine();
+			 id = Integer.parseInt(keyboard.nextLine());
 			 business.getFacility(id).addFacilityDetail(detail);
 			 break;
 		 case 5: 
 			 System.out.println("Please enter the facilityID you want to find the available capacity of: ");
-			 id = keyboard.nextInt();
+			 id = Integer.parseInt(keyboard.nextLine());
+			 System.out.println("Issue:" + business.getFacility(id));
 			 System.out.println("Available capacity: " + business.getFacility(id).requestAvailableCapacity());//requestAvailableCapacity
 			 break;
 		 case 6:				//getFacilityInformation - end of Facility
@@ -141,9 +142,10 @@ static int input = 25;
 			 System.out.println("Please enter the facilityID you want to add this detail to: ");
 			 id = keyboard.nextInt();
 			 business.getFacility(id).listInspections();
+			 System.out.println("");
 			 break;
 		 case 13:                 //makeFacilityMaintenanceRequest or scheduleMaintenance
-			 System.out.println("Please enter Maintenance information: ");           
+			 System.out.println("Please enter Maintenance information below. ");           
 			 System.out.println("Please enter RequestID: ");
 			     int rID = keyboard.nextInt();
 			     keyboard.nextLine();
@@ -208,8 +210,31 @@ static int input = 25;
 			 id = keyboard.nextInt();
 			 business.getFacility(id).listFacilityProblems();
 			 break;
-		
-		
+		 case 20:
+			 System.out.println("Please enter inspection information. ");           
+			 System.out.println("Please enter Inspector Name: ");
+			     String inspect = keyboard.nextLine();
+			 System.out.println("Please enter facility Name: ");
+				String facName = keyboard.nextLine();
+		     System.out.println("Please enter facilityID: ");
+				int facID = keyboard.nextInt();
+			 System.out.println("Please enter Inspection result as a boolean: ");
+				boolean test = keyboard.nextBoolean();
+			 System.out.println("Please enter facility Inspection date: (Year-Month-Day) ");
+			    String inspectDate = keyboard.nextLine();
+			    keyboard.nextLine();
+			 System.out.println("Please enter facility Inspection expiration date: (Year-Month-Day) ");
+			    String endInspectDate = keyboard.nextLine();
+			    System.out.println(endInspectDate);
+			    
+			    Inspection exam = new Inspection(inspect,facName,facID,test,inspectDate,endInspectDate);
+			    try {
+			    business.getFacility(facID).addInspection(exam) ;
+			    }
+			    catch(Exception wrongIDEnter) {
+			    	System.out.println("You entered an invalid facility ID. Please try again.");
+			    }
+			    break;
 	 }
 	}
 	 keyboard.close();
